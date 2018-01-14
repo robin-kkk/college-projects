@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AnalyzeMyself:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AnalyzeMyself_jar</output-path>
+    <root id="archive" name="AnalyzeMyself.jar">
+      <element id="module-output" name="AnalyzeMyself" />
+    </root>
+  </artifact>
+</component>
