@@ -21,6 +21,10 @@ Queue::Queue(void)
 }
 Queue::~Queue(void)
 {
+	size=0;
+	size=0;
+	size=0;
+	size=0;
 }
 bool Queue::IsEmpty()
 {
