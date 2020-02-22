@@ -1,0 +1,390 @@
+.gallery {
+    color: #000;
+    /* 그림을 감싸고 있는 div */
+    width: 100%;
+    display: block;
+    position: absolute;
+    margin: 1em 0 2.5em;
+    bottom: 10px;
+    transform: scale(0.85) translateY(0);
+    -webkit-transform: scale(0.85) translateY(0);
+    transition: transform 0.3s;
+    -webkit-transition: transform 0.3s;
+}
+
+@media(max-width: 600px) {
+    .gallery {
+        overflow: hidden;
+        transform:none;
+    }
+}
+
+.gallery:hover {
+    transform: scale(1) translateY(-30px);
+    -webkit-transform: scale(1) translateY(-30px);
+    transition: transform 0.4s;
+    -webkit-transition: transform 0.4s;
+}
+
+.gallery-pictures {
+    /* 그림의 순서(ul) */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    -webkit-transform: rotateY(0);
+    white-space: nowrap;
+    font-size: 0;
+}
+
+.gallery-picture {
+    /* 그림 하나하나(li) */
+    width: 700px;
+    margin-right: 120px;
+    display: inline-block;
+    -webkit-transform: rotateY(0);
+    transform: rotateY(0);
+}
+
+#read-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    width: 20%;
+    min-width: 10em;
+    padding: 0 0.3em 0.3em 0;
+    background: #242f3e;
+}
+
+#read_more {
+    width: 100%;
+    font-size: 1.2em;
+    color:white;
+    background:crimson;
+    border: none;
+    line-height: 1.6em;
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+#read_more:hover {
+    opacity: 1;
+}
+
+table {
+    text-align: justify;
+    margin: 1em;
+    margin-left: 0;
+    width: 100%;
+}
+
+table td {
+    vertical-align: middle;
+}
+
+table div {
+    border: none;
+    margin: auto;
+}
+
+/* POST DESIGN */
+.post-background {
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9998;
+}
+
+.post-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9999;
+}
+
+.post-close {
+    color: crimson;
+    font-size: 1.5em;
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 10000;
+    font-weight: bold;
+    font-family: 'Courgette';
+    font-size: 1.2em;
+}
+
+.img-wrapper {
+    width: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 1em;
+}
+
+.post-img {
+    width: 90%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.desc-wrapper {
+    display: table;
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* 컨텐트 크기가 윈도우보다 크면 제거 */
+    width: 50%;
+    padding: 30px;
+    margin: auto;
+}
+
+.set_zero_to_bottom {
+    bottom: 0;
+}
+
+.description {
+    display: table-cell;
+    width: 95%;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.desc-table {
+    margin: 1em;
+    width: 100%;
+    font-family: 'Courgette';
+}
+
+.writer {
+    text-decoration-line: none;
+    color: darkslateblue;
+}
+
+.post-option {
+    border-radius: 22.5px;
+    width: 45px;
+    height: 45px;
+}
+.post-option:hover {
+    opacity: 1;
+}
+
+.post-delete>img {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+    transition: transform 0.3s;
+    -webkit-transition: transform 0.3s;    
+}
+
+.post-delete>img:hover,
+.post-delete>img:focus {
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    transition: transform 0.3s;
+    -webkit-transition: transform 0.3s;
+}
+
+.post-delete img,
+.like img {
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+}
+
+.like_before {
+    opacity: 0.6;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.like_before:hover {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transition: transform 0.3s;
+    -webkit-transition: transform 0.3s;
+}
+
+.like {
+    position: relative;
+    left: 0.6em;
+    top: 0.6em;
+}
+.replyer {
+    text-align: center;
+    width: 70px;
+    font-weight: bold;
+    font-family: 'Indie Flower', cursive;
+}
+
+.profile {
+    margin: auto 1em;
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    background: burlywood;
+    padding:0;
+}
+
+.profile img {
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+}
+
+/* comment design */
+.comment {
+    display: inline-block;
+    margin: auto;
+    width: 95%;
+}
+
+.reply-option {
+    height: 1.5em;
+    text-align: right;
+    vertical-align: top;
+    margin-top:0.5em;
+}
+
+.input-comment input[type="submit"],
+.reply-option button {
+    outline: none;
+    border: none;
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    font-family: 'Indie Flower';
+    cursor: pointer;
+}
+
+.input-comment input[type="submit"] {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px dashed #000;
+}
+
+.reply-option button {
+    border-radius: 5px;
+    margin-right: 1em;
+    padding: 0.1em 0.5em;
+    color: darkkhaki;
+}
+
+.reply-option button:hover {
+    color: #000;
+}
+
+.date {
+    text-align: right;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courgette';
+}
+
+.reply-option .date {
+    color: grey;
+    font-size: 0.8em;
+    margin-right: 1em;
+}
+
+.reply-writer {
+    margin-top: 0;
+    font-family: 'Courgette';
+}
+
+.reply1 div img {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+}
+.reply2.reply-writer {
+    color:darkslategrey;
+}
+.reply2 div {
+    display: inline-block;
+    margin: 0.2em 0 0.5em 3em;
+}
+
+.reply2 img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.reply_content {
+    padding: 1em 0 0 1.2em;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.input-comment {
+    position: fixed;
+    padding-right: 1em;
+    bottom: 10px;
+    right: 0;
+    background: #fff;
+    margin: 0 60px;
+    box-shadow: 3px 3px 15px 3px grey;
+    z-index: 1000;
+}
+
+.input-comment form {
+    margin: 0;
+    margin-top: 0.5em;
+    display: table;
+    height: 80px;
+    vertical-align: middle;
+    padding: 0;
+}
+
+.input-comment div {
+    display: table-cell;
+    margin: auto;
+    padding: 0.5em;
+    border: none;
+    vertical-align: middle;
+}
+
+.input-comment .replyer {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.input-comment textarea {
+    display: table-cell;
+    margin: 1em 0.5em 0 0.2em;
+    font-size: 1.2em;
+}
+
+.comment-toggle {
+    padding: 0;
+    border-radius: 7.5px;
+    width: 20px;
+    height: 20px;
+    color: #000;
+    font-size: 1.2em;
+    position: absolute;
+    right: 0;
+    top: 0;
+}

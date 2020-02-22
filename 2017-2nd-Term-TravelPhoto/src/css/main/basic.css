@@ -1,0 +1,84 @@
+@font-face {
+	font-weight: normal;
+	font-style: normal;
+}
+*, *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+#map {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: grey;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+	background: #52545A;
+	color: #000;
+	font-size: 1em;
+    overflow: hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+nav, {
+    display: block;
+}
+
+[hidden] {
+    display: none;
+}
+
+a {
+	color: #999;
+	text-decoration: none;
+}
+
+a:focus {
+    outline: thin dotted;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+a:hover, a:focus {
+	color: #19194D;
+	outline: none;
+}
+
+img {
+    border: 0;
+}
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+button {
+	outline: none;
+    border: none;
+    background: none;
+    cursor:pointer;
+}
+
+.hidden { /* svg */
+	position: absolute;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+}

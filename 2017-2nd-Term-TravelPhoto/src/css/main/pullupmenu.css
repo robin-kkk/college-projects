@@ -1,0 +1,162 @@
+.menu {
+	position: fixed;
+	max-width: 400px;
+	width: 90%;
+	height: 360px;
+	bottom: 0;
+    left: 50%;
+	z-index: 100;
+	pointer-events: none; /* HTML 요소들의 마우스/터치 이벤트의 응답을 조정하는 속성 */
+	-webkit-transform: translate3d(-50%, 240px, 0);
+	transform: translate3d(-50%, 240px, 0);
+	-webkit-transition: -webkit-transform 0.6s;
+	transition: transform 0.6s; /* 해당 속성을 정해진 시간 내에 부드럽게 전환시켜줌 */
+}
+
+.menu.menu--open {
+	pointer-events: auto;
+	-webkit-transform: translate3d(-50%, 0, 0);
+	transform: translate3d(-50%, 0, 0);
+}
+
+.menu.menu--open + .container {
+	opacity: 0.1;
+	pointer-events: none; /* 메뉴 열리면 화면 비활성화 */
+}
+
+.menu-inner {
+	padding: 120px 2em 0;
+	height: 100%;
+	position: relative;
+	z-index: 100;
+    text-align: center;
+}
+
+.menu ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.menu ul li {
+	margin: 0;
+	-webkit-transform: translate3d(0, 150px, 0);
+	transform: translate3d(0, 150px, 0); /* 메뉴이동과 함께 이동하도록. */
+	-webkit-transition: -webkit-transform 0.7s;
+	transition: transform 0.7s; /* 메뉴이동과 함께 이동하도록. */
+}
+
+.menu.menu--anim ul li {
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+
+.menu.menu--anim ul li:last-child {
+	-webkit-transition-delay: 0.3s;
+	transition-delay: 0.3s;
+}
+
+.menu.menu--anim ul li:nth-child(3) {
+	-webkit-transition-delay: 0.2s;
+	transition-delay: 0.2s;
+}
+
+.menu.menu--anim ul li:nth-child(2) {
+	-webkit-transition-delay: 0.1s;
+	transition-delay: 0.1s;
+}
+
+.menu ul li a {
+	display: block;
+	outline: none;
+	font-size: 1.15em;
+	font-weight: bold;
+	padding: 0.85em;
+    color: snow;
+    text-shadow: 1px 1px 9px black;
+}
+
+.menu a:hover, .menu a:focus { 
+    color: snow;
+    text-shadow: 1px 1px 9px violet;
+}
+
+.menu-handle {
+	background: transparent;
+	border: none;
+	width: 30px;
+	height: 18px;
+	padding: 0;
+	outline: none;
+	position: absolute; /* menu 내부를 기준으로 절대위치 */
+	top: 66px;
+	left: 50%;
+	margin-left: -15px;
+	z-index: 2000;
+	pointer-events: auto;
+    cursor: pointer;
+}
+
+.menu-handle::before,
+.menu-handle::after {
+	content: '';
+	position: absolute;
+	width: 2px;
+	height: 100%;
+	background: #5f656f;
+	left: 50%;
+	top: 0;
+	margin-left: -1px;
+	-webkit-transform-origin: 50% 0;
+	transform-origin: 50% 0;
+	-webkit-transition: -webkit-transform 0.25s;
+	transition: transform 0.25s;
+}
+
+.menu-handle span {
+	display: none;
+}
+
+.menu-handle::before {
+	-webkit-transform: rotate3d(0, 0, 1, 45deg);
+	transform: rotate3d(0, 0, 1, 45deg);
+}
+
+.menu-handle::after {
+	-webkit-transform: rotate3d(0, 0, 1, -45deg);
+	transform: rotate3d(0, 0, 1, -45deg);
+}
+
+.menu--open .menu-handle::before {
+	-webkit-transform: translate3d(0, 75%, 0) rotate3d(0, 0, 1, 135deg);
+	transform: translate3d(0, 75%, 0) rotate3d(0, 0, 1, 135deg);
+}
+
+.menu--open .menu-handle::after {
+	-webkit-transform: translate3d(0, 75%, 0) rotate3d(0, 0, 1, -135deg);
+	transform: translate3d(0, 75%, 0) rotate3d(0, 0, 1, -135deg);
+}
+
+.morph-shape { /* svg를 감싸는 div 태그 */
+	position: absolute;
+	height: 200px;
+	width: 100%;
+	top: 0;
+	right: 0;
+}
+
+.morph-shape svg path {
+	stroke: #5f656f; /* here */
+	stroke-width: 2px;
+}
+
+@media screen and (max-width: 63em) {
+	.menu {
+		background: #434d55;
+		background: -webkit-linear-gradient(top, rgba(67,77,85,0) 0%,rgba(67,77,85,1) 20%);
+		background: linear-gradient(to bottom, rgba(67,77,85,0) 0%, rgba(67,77,85,1) 20%);
+	}
+	.menu.menu--open + .container {
+		opacity: 0.05;
+	}
+}

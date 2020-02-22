@@ -1,0 +1,80 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:200,500,700,800);
+
+.modal-overlay {
+	background: rgba(0,0,0,0.5);
+    /* 브라우저 윈도우의 크기에 상관없이 항상 모든 페이지에서 전체 화면으로 늘리게 된다. */
+	position: fixed; /* 스크롤하더라도 위치가 고정된다. */
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	opacity: 0;
+	visibility: hidden;
+    z-index: 99;
+}
+
+.modal-wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+    z-index: 101;
+	overflow: hidden;
+	pointer-events: none;
+    font-weight: 500;
+	font-size: 1.05em;
+	font-family: 'Raleway', Arial, sans-serif;
+}
+
+.modal {
+    text-align: center;
+	background: #fff;
+	color: #666871;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	margin: auto;
+	pointer-events: auto;
+	visibility: hidden;
+}
+
+.login-modal {
+    width: 400px;
+	max-width: 90%;
+	height: 350px;
+    padding: 30px;
+}
+
+.upload-modal {
+    width: 600px;
+    max-width: 90%;
+    height: 530px;
+    padding: 40px;
+}
+
+@media screen and (max-width: 40em) {
+	.login-modal { height: 350px; }
+    .upload-modal { height: 530px; }
+}
+
+.close-modal {
+	color: #aaa;
+	background: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	border: none;
+	width: 20px;
+	height: 20px;
+	line-height: 15px;
+	font-size: 22px;
+	font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+	color: #666871;
+}

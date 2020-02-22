@@ -1,0 +1,76 @@
+.sb-search {
+	position: absolute;
+    top: 15px;
+    right: 15px;
+	width: 0%;
+	min-width: 40px;
+	height: 40px;
+/*	float: right;*/
+	overflow: hidden;
+    border-radius:20px;
+    background: #fff;
+	-webkit-transition: width 0.3s;
+	-moz-transition: width 0.3s;
+	transition: width 0.3s;
+	-webkit-backface-visibility: hidden;
+}
+
+.sb-search-input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+    border-radius:20px;
+	outline: none;
+    background: none;
+	width: 100%;
+    min-width: 200px;
+	height: 40px;
+	margin: 0;
+	z-index: 10;
+	padding: 10px 45px 10px 20px;
+	font-family: inherit;
+	font-size: 16px;
+	color: #000;
+}
+
+.sb-search-input:-webkit-input-placeholder {
+	color: #efb480;
+}
+.sb-search-input:-moz-placeholder {
+	color: #efb480;
+}
+.sb-search-input:-ms-input-placeholder {
+	color: #efb480;
+}
+
+.sb-search-submit {
+    width: 40px;
+	height: 40px;
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 0;
+	margin: 0;
+	line-height: 40px;
+	text-align: center;
+	cursor: pointer;
+	background: transparent;/* IE needs this */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* IE 8 */
+    opacity: 1;
+    filter: alpha(opacity=0); /* IE 5-7 */
+	color: transparent;
+	border: none;
+    border-radius:20px;
+	outline: none;
+	z-index: 10;
+}
+.sb-search-submit img {
+    border-radius:20px;
+}
+.sb-search-open,
+#search-form {
+	width: 20%;
+    min-width: 240px;
+}
