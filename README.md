@@ -1,10 +1,9 @@
 # Intro
-Here is about course projects suggested in lecture of University of Seoul.
+These are course projects suggested in lecture of University of Seoul.
 
-There are some group projects. In this case, I marked.
+In case of some group projects, I marked who was with me.
 
-Named by `Year-WhichTerm-ProjectName`
-
+#### Named by `Year-WhichTerm-ProjectName`
 
 # Index of
 - [2017-1st-Term-ClassViewer](./2017-1st-Term-ClassViewer)
