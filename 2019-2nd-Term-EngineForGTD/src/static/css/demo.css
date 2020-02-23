@@ -1,0 +1,150 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+@font-face {
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'codropsicons';
+	src:url('../fonts/codropsicons/codropsicons.eot');
+	src:url('../fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/codropsicons/codropsicons.woff') format('woff'),
+		url('../fonts/codropsicons/codropsicons.ttf') format('truetype'),
+		url('../fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
+}
+
+*,
+*:after,
+*::before {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	/*background: #485b6e;*/
+	background: #ddd url(../images/bg.jpg) repeat top left;
+	color: #fff;
+	font-weight: 400;
+	font-family: 'Lato', Calibri, Arial, sans-serif;
+}
+
+a {
+	text-decoration: none;
+	color: #2c3e52;
+	outline: none;
+}
+
+a:hover, a:focus {
+	color: #ed4e6e;
+	outline: none;
+}
+
+/* Clearfix hack by Nicolas Gallagher: http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before,
+.clearfix:after {
+	display: table;
+	content: " ";
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+.main {
+    position: absolute;
+    display: table;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.column {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.column p {
+	font-weight: 300;
+	font-size: 1.5em;
+	padding: 0 0 0.5em;
+	margin: 0;
+	line-height: 1.5;
+}
+
+p.small {
+	font-weight: 700;
+	font-size: 1em;
+}
+
+input[type="file"] {
+	width: 180px;
+	margin-bottom: 30px;
+}
+
+button {
+	border: none;
+	padding: 0.6em 1.2em;
+	background: #ed4e6e;
+	color: #fff;
+	font-family: 'Lato', Calibri, Arial, sans-serif;
+	font-size: 1em;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	cursor: pointer;
+	display: inline-block;
+	margin: 3px 2px;
+}
+
+button:hover {
+	background: #2c3e52;
+}
+
+.info {
+	text-align: center;
+	font-size: 1.5em;
+	margin-top: 3em;
+	clear: both;
+	padding: 3em 0;
+}
+
+.info a {
+	font-weight: 700;
+	font-size: 0.9em;
+}
+
+@media screen and (max-width: 46.0625em) {
+	.column {
+		width: 100%;
+		min-width: auto;
+		min-height: auto;
+		padding: 2em; 
+		text-align: center;
+	}
+
+	.column p {
+		font-size: 1.5em;
+	}
+
+	.column:nth-child(2) {
+		text-align: center;
+		box-shadow: 0 -1px 0 rgba(0,0,0,0.1);
+	}
+}
+
+@media screen and (max-width: 25em) {
+
+	.container > header {
+		font-size: 80%;
+		margin-bottom: 0;
+	}
+
+	.codrops-top {
+		font-size: 120%;
+	}
+
+	.codrops-icon span {
+		font-size: 120%;
+	}
+
+}
