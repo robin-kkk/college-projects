@@ -15,7 +15,7 @@ In case of some group projects, I marked who was with me.
 - [2017-1st-Term-ScoringEntrepreneurship](./2017-1st-Term-ScoringEntrepreneurship)
     - Course: Foundation and Management of a Engineer (not major)
     - Language: Java
-- [2017-2nd-Term-MakingShell](./2017-2nd-Term-MakingShell)
+- [2017-2nd-Term-MiniShell](./2017-2nd-Term-MiniShell)
     - Course: Linux Programming
     - Language: C
 - [2017-2nd-Term-TravelPhoto](./2017-2nd-Term-TravelPhoto)
@@ -25,10 +25,10 @@ In case of some group projects, I marked who was with me.
     - Course: Computer Security
     - Language: None
     - I had a presentation about how to hack wireless network.
-- [2019-2nd-Term-EngineForGTD](./2019-2nd-Term-EngineForGTD)
-    - Course: Software Application
-    - Language: Python
 - [2019-2nd-Term-basicAI](./2019-2nd-Term-basicAI)
     - Course: Artificial Intelligence
     - Language: C++, Python
     - There are 4 side projects inside.
+- [2019-2nd-Term-EngineForGTD](./2019-2nd-Term-EngineForGTD)
+    - Course: Software Application
+    - Language: Python

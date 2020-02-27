@@ -63,6 +63,7 @@ int execute(char **comm, int how)
 	
 	if (redir != 0) {
 		if (strcmp(comm[redir], ">") == 0) {
+			/* Do something */
 			if ((pid1 = fork()) < 0) {
 				fprintf(stderr, "minish : fork error\n");
 				return -1;
@@ -79,11 +80,13 @@ int execute(char **comm, int how)
 				exit(0);
 			}
 		} else if (strcmp(comm[redir], "<") == 0) {
+			/* Do something */
 			if ((pid1 = fork()) < 0) {
 				fprintf(stderr, "minish : fork error\n");
 				return -1;
 			}
 			else if (pid1 == 0) {
+				/* Do something */
 				fd[0] = open(comm[redir+1], O_RDONLY);
 				if (fd[0] < 0) {
 					perror("< open error");
@@ -96,6 +99,7 @@ int execute(char **comm, int how)
 				exit(0);
 			}
 		} else if (strcmp(comm[redir], "|") == 0) {
+			/* Do something */
 			pipe(fd);
 			if ((pid1 = fork()) < 0) {
 				fprintf(stderr, "minish : fork error\n");
@@ -126,6 +130,7 @@ int execute(char **comm, int how)
 			close(fd[1]);
 		}
 	} else {
+		/* Do something */
 		if ((pid1 = fork()) < 0) {
 			fprintf(stderr, "minish : fork error\n");
 			return -1;
@@ -146,8 +151,8 @@ int execute(char **comm, int how)
 		return 0;
 	}		
 	/* Foreground execution */
-	// 포그라운드일 경우 부모는 wait
-	// 백그라운드일경우 부모는 wait하지않는다.
+	// in case of foreground, parent waits.
+	// in case of background, parent not wait.
 	while (waitpid(pid1, NULL, 0) < 0)
 		if (errno != EINTR) return -1;
 	return 0;
@@ -174,7 +179,7 @@ int parse_and_execute(char *input)
 			else if (!strcmp(arg[0], "exit")) quit = TRUE;
 			else if (!strcmp(arg[0], "cd")) {
 				/* Do something */
-				/* 현재 디렉토리 위치 바꾸기 */
+				/* Change current directory */
 				if (!strcmp(arg[1], "~")) {
 					char* uid = getpwuid(getuid())->pw_name;
 					if (!strcmp(uid, "root")) arg[1] = "/root";
@@ -194,7 +199,7 @@ int parse_and_execute(char *input)
 					int	i, fid;
 					int	readcount;
 					char	buf[512];
-					/*  학생들이 프로그램 작성할 것
+					/*  Do something 
 					fid = open(arg[1], ...);
 					if (fid >= 0) {
 						readcount = read(fid, buf, 512);
@@ -208,13 +213,13 @@ int parse_and_execute(char *input)
 					*/
 				}
 			}
-			else { // cd나 type이 아닌 외부명령어 -> forkexec
+			else { // neither "cd" nor "type", external command is forkexec.
 				how = (type == AMPERSAND) ? BACKGROUND : FOREGROUND;
 				arg[narg] = NULL;
 				//printf("arg[1] : %s\n", arg[1]);
 				//printf("arg[2] : %s\n", arg[2]);
 				if (narg != 0)
-					execute(arg, how); // how : 뒤에 &의 유무
+					execute(arg, how); // how : is there '&' behind ?
 			}
 			narg = 0;
 			if (type == EOL)
