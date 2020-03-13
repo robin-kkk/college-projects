@@ -24,7 +24,7 @@ In case of some group projects, I marked who was with me.
 - [2019-1st-Term-WiFiHacking](./2019-1st-Term-WiFiHacking)
     - Course: Computer Security
     - Language: None
-    - I had a presentation about how to hack wireless network.
+    - I had a presentation about how to hack a wireless network.
 - [2019-2nd-Term-basicAI](./2019-2nd-Term-basicAI)
     - Course: Artificial Intelligence
     - Language: C++, Python
