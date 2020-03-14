@@ -164,7 +164,7 @@ Good!
 
 ### Wireshark
 
-This is a famous tool, which scans and sniffs in any network. If this tool is executed, you should select an adapter first, and then set up a few configurations for monitoring. A red box of the next image is to enter a keyword for filtering.
+This is a famous tool, which scans and sniffs in any network. If this tool is executed, you should select an adapter first. A red box of the next image is to enter a keyword for filtering.
 
 ![8](./img/8.png?raw=true)
 
