@@ -1,4 +1,14 @@
-# basic AI
+# Improving performance of MINIST  <!-- omit in toc -->
 
-## Improving performance of MINIST
+- Course: Artificial Intelligence
+- Language: C++, Python
 
+---
+
+#### Table of contents <!-- omit in toc -->
+
+- [Overview](#overview)
+
+---
+
+## Overviewㄷ

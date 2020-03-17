@@ -47,10 +47,9 @@ There are 4 side projects inside. (just programming assignments)
 
 - [`04`](./04) - _Improving performance of MINIST_
   - Condition
-    1. Modify suggested code: (url)
+    1. Modify [the suggested code](https://github.com/Jpub/TensorflowDeeplearning/blob/master/Chapter05/MNIST%20double%20layer%20CNN%20classification.ipynb)
     2. Improve accuracy less than 1% against test data.
     3. Extend the given source by various methods.
     4. Increase the count of Convolution Hidden layer.
     5. Filter size = 3x3
   - Language: Python with tensorflow
-
