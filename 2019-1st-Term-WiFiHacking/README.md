@@ -141,7 +141,6 @@ Monitor Mode is used for only a wireless network and can capture without connect
 
 - WNIC stands for `Wireless Network Interface Card`.
 
----
 ## Tools Required
 
 ### USB Adapter: WNIC
@@ -178,8 +177,6 @@ If you wanna more detail, click this [link](https://www.wireshark.org).
 This is an awesome open-source tool package for cracking or AP scanning or sniffing and so on in especially WLAN. Various useful tools are provided from it.
 
 If you wanna more detail, click this [link](https://www.aircrack-ng.org/documentation.html).
-
----
 
 ## Application
 
@@ -320,7 +317,6 @@ The following is one case.
 
 - ![16](./img/16.png?raw=true)
 
----
 ## Conclusion
 
 We looked at some hacking examples in a wireless network so far. Many people might think that WPA/WPA2 is secure since it has a password or so. But, the important thing we have to remember is that we should protect our data oneself on the Internet. This attitude is so much troublesome to someone, whereas treated as meaningful trivial things too.

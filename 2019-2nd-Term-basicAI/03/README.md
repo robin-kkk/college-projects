@@ -1,7 +1,7 @@
 # Multi-layer Perceptron  <!-- omit in toc -->
 
 - Course: Artificial Intelligence
-- Language: C++, Python
+- Language: C++
 
 This is a very simple machine learning program.
 
@@ -172,7 +172,7 @@ void Classifier::update_weights()
       {
         // Calculate upstream gradient and save.
         _delta[l-1][j] += _delta[l][i] * _weight[l-1][i][j];
-        // update weight of each input node.
+        // Update weight of each input node.
         double delta_w = -_learning_rate * _delta[l][i] * _input[l-1][j][order];
         _weight[l-1][i][j] += delta_w;
       }
