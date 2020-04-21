@@ -1,0 +1,23 @@
+[MAIN] sequential keys was generated!
+[MAIN] inserting all required keys..................
+
+============================================================
+[MAIN] test Started!
+
+[THREAD-37711872] search(): range = [2000000, 3000000]
+[THREAD-40931328] search(): range = [8000000, 9000000]
+[THREAD-36638720] search(): range = [0, 1000000]
+[THREAD-37175296] search(): range = [1000000, 2000000]
+[THREAD-38785024] search(): range = [4000000, 5000000]
+[THREAD-38248448] search(): range = [3000000, 4000000]
+[THREAD-39321600] search(): range = [5000000, 6000000]
+[THREAD-39858176] search(): range = [6000000, 7000000]
+[THREAD-40394752] search(): range = [7000000, 8000000]
+[THREAD-41467904] insert(): range = [9000000, 10000000]
+..................................................
+[MAIN] elapsed = 10 sec
+[MAIN] ops = 1000000.000000
+
+[MAIN] test is done!
+============================================================
+Program ended with exit code: 0

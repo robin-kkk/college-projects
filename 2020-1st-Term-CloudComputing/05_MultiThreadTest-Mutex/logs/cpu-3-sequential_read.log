@@ -1,0 +1,33 @@
+- Test Menual -
+[1] sequential_write()
+[2] sequential_read()
+[3] random_write()
+[4] random_read()
+Enter the number: 2
+
+[MAIN] The number of threads: 8
+[MAIN] Sequential Keys Generated!
+[MAIN] sequential_write(): writing...
+[MAIN] sequential_write(): finish.
+[THREAD-0] sequential_read(): reading...
+[THREAD-0] sequential_read(): not found count = 0
+[THREAD-1] sequential_read(): reading...
+[THREAD-1] sequential_read(): not found count = 0
+[THREAD-2] sequential_read(): reading...
+[THREAD-2] sequential_read(): not found count = 0
+[THREAD-3] sequential_read(): reading...
+[THREAD-3] sequential_read(): not found count = 0
+[THREAD-4] sequential_read(): reading...
+[THREAD-4] sequential_read(): not found count = 0
+[THREAD-5] sequential_read(): reading...
+[THREAD-5] sequential_read(): not found count = 0
+[THREAD-6] sequential_read(): reading...
+[THREAD-6] sequential_read(): not found count = 0
+[THREAD-7] sequential_read(): reading...
+[THREAD-7] sequential_read(): not found count = 0
+
+[MAIN] sequential_read()
+Duration: 4 sec
+Performance: 2000000.000000 operations per 1 sec
+
+Program ended with exit code: 0
