@@ -1,0 +1,23 @@
+[MAIN] sequential keys was generated!
+[MAIN] inserting all required keys....................
+
+============================================================
+[MAIN] test Started!
+
+[THREAD-32198656] delete(): range = [9000000, 10000000]
+[THREAD-26832896] search_by_range(): range = [0, 1000000], found: 1000000
+[THREAD-31125504] search_by_range(): range = [7000000, 8000000], found: 1000001
+[THREAD-30588928] search_by_range(): range = [6000000, 7000000], found: 1000001
+[THREAD-31662080] search_by_range(): range = [8000000, 9000000], found: 1000001
+[THREAD-28979200] search_by_range(): range = [3000000, 4000000], found: 1000001
+[THREAD-28442624] search_by_range(): range = [2000000, 3000000], found: 1000001
+[THREAD-29515776] search_by_range(): range = [4000000, 5000000], found: 1000001
+[THREAD-30052352] search_by_range(): range = [5000000, 6000000], found: 1000001
+[THREAD-27906048] search_by_range(): range = [1000000, 2000000], found: 1000001
+.....
+[MAIN] elapsed = 10 sec
+[MAIN] ops = 999999.000000
+
+[MAIN] test is done!
+============================================================
+Program ended with exit code: 0
