@@ -1,0 +1,8 @@
+*.log
+*.pyc
+*.csv
+*.model
+*/migrations/*.py
+server/deploy/stock_recommendation/celerybeat-schedule
+server/deploy/stock_recommendation/.static_root
+server/deploy/db

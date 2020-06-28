@@ -1,0 +1,144 @@
+{% if msg %}
+<script>window.alert("{{ msg }}");</script>
+{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Share ur Album !!</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
+  <!-- Ekko Lightbox -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ekko-lightbox.css') }}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/summernote-bs4.css') }}">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/select2-bootstrap4.min.css') }}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/adminlte.min.css') }}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Custom style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+  
+  <!-- jQuery -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- Bootstrap -->
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <!-- jQuery UI -->
+  <script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+  <!-- Ekko Lightbox -->
+  <script src="{{ url_for('static', filename='js/ekko-lightbox.min.js') }}"></script>
+  <!-- AdminLTE App -->
+  <script src="{{ url_for('static', filename='js/adminlte.min.js') }}"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
+</head>
+<body class="layout-top-nav">
+  <div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/about" class="nav-link">Contact</a>
+        </li>
+      </ul>
+      
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        {% if (session['session_key'] and user)%}
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/profile/{{user.artist_id}}" class="nav-link">Profile</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/logout" class="nav-link">Sign out</a>
+        </li>
+        {% else %}
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/login" class="nav-link">Sign In</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="/register" class="nav-link">Sign Up</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Content Wrapper. Contains page content -->
+    {% block content %}{% endblock %}
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer" style="margin-left:0;">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 1.0.2
+      </div>
+      <strong>Copyright &copy; 2019-2020 <a href="https://github.com/ke2ek">Eunjin Kwon</a>.</strong> All rights
+      reserved.
+    </footer>
+  </div>
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<!-- jQuery UI -->
+<script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='js/adminlte.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ url_for('static', filename='js/select2.full.min.js') }}"></script>
+<!-- InputMask -->
+<script src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.inputmask.bundle.min.js') }}"></script>
+<!-- Summernote -->
+<script src="{{ url_for('static', filename='js/summernote-bs4.min.js') }}"></script>
+<!-- Filterizr-->
+<script src="{{ url_for('static', filename='js/filterizr/jquery.filterizr.min.js') }}"></script>
+<!-- Page script -->
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+	$('.select2').select2();
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    });
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('yyyy', { 'placeholder': 'yyyy' });
+    //Money Euro
+    $('[data-mask]').inputmask();
+    //Add text editor
+    $('#compose-textarea').summernote();
+  });
+
+  function save_album() {
+    var forms = $('.form-control');
+    for (var i=0; i<forms.length; i++) {
+      if (forms[i].value == '') {
+        alert('Please enter the content.');
+        return false;
+      }
+    }
+    
+    var selections = $('.select2-selection__choice');
+    if (selections.length > 0) {
+        var collaborators = '';
+        $.each(selections, function(i,v) { collaborators += ' ' + v.title; });
+        $("#collaborators")[0].value = collaborators;
+    }
+    return true;
+  }
+</script>
+</body>
+</html>

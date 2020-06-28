@@ -1,0 +1,4 @@
+Flask==1.1.2
+pandas==1.0.4
+redis==3.5.3
+Werkzeug==1.0.1

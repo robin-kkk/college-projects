@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content mt-3">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-12 col-md-4">
+            <div class="card card-info card-outline" style="height: 170px;">
+                <div class="card-header"><h5 class="card-title m-0"><b>Event</b></h5></div>
+                <div class="card-body">
+                  <h6 class="card-title"><i>[Coming Soon]</i>&nbsp;&nbsp;4 Awards for Best Website!</h6>
+                  <h6 class="card-title"><i>[Coming Soon]</i>&nbsp;&nbsp;Over 50,000 Users!</h6>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="card card-info card-outline" style="height: 170px;">
+                <div class="card-header"><h5 class="card-title m-0"><b>Notice</b></h5></div>
+                <div class="card-body">
+                  <h6 class="card-title text-danger">Please be courteous when collaborating.</h6>
+                  <p class="card-text">It is wrong to swear or blame someone for rejecting a collaboration request.
+                  Let's be users who understand each other's position.</p>
+                </div>
+            </div>
+          </div>
+          
+          <div class="col-12 col-md-2">
+              <div class="info-box mb-2">
+                  <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text">Albums</span>
+                      <span class="info-box-number">{{ data.num_albums }}</span>
+                  </div>
+              </div>
+              <div class="info-box mb-2">
+                  <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text">Members</span>
+                      <span class="info-box-number">{{ data.num_artists }}</span>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+        {% for artist_id in data.artist_rmd_list %}
+          {% set artist = data.all_artists[artist_id] %}
+          <div class="col-md-4">
+            <div class="card card-widget widget-user">
+              <div class="widget-user-header bg-info">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h3 class="widget-user-username" style="margin-top: .5em;">{{ artist_id }}</h3>
+                    <h6>{% if artist.art_name | length > 0 %} {{ artist_art_name }} {% else %} {{ artist_real_name }} {% endif %}</h6>
+                    <h5 class="widget-user-desc">{{ artist.role }}</h5>
+                  </div>
+                  <div class="col-md-6"><i class="fas fa-burn"></i>Hottest Albums<br>
+                    <ul class="ml-4 mb-0 fa-ul text-muted" style="height: 80px; overflow: auto; margin-left: .5rem!important;">
+                    {% for album_id in artist.albums %}
+                      {% set album = data.all_albums[album_id] %}
+                      <li><a href="/album/{{ album_id }}/0" class="text-navy"><i>{{ album.album_title }}</i></a></li>
+                    {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer" style="padding-top: 1em;">
+                <div class="row">
+                  <div class="col-sm-6 border-right">
+                    <div class="description-block">
+                      <h5 class="description-header">{{ artist.albums | length }}</h5>
+                      <span class="description-text">Albums #</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="description-block">
+                      <h5 class="description-header">{{ artist.collaboration | length }}</h5>
+                      <span class="description-text">Collaborations #</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-primary">
+              <div class="card-body">
+                <div>
+                  <div class="btn-group w-100 mb-2 row d-flex align-items-stretch">
+                    <a class="col-md-2 btn btn-info active" href="javascript:void(0)" style="border-radius: unset;" data-filter="all"> All Albums </a>
+                    {% for genre in data.genre_list %}
+                    <a class="col-md-2 btn btn-info" {% if loop.index == loop.length %}style="border-radius:unset"{% endif %}
+                      href="javascript:void(0)" data-filter="{{ genre }}">
+                      {{ genre }}
+                    </a>
+                    {% endfor %}
+                  </div>
+                  <div class="mb-2">
+                    <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle> Shuffle </a>
+                    <div class="float-right">
+                      <div class="btn-group">
+                        <a class="btn btn-outline-secondary" href="javascript:void(0)" data-sortAsc> Ascending </a>
+                        <a class="btn btn-outline-secondary" href="javascript:void(0)" data-sortDesc> Descending </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="filter-container p-0 row">
+                  {% for _id, album in data.all_albums.items() %}
+                    <div class="filtr-item col-sm-2" data-category="{{ album.genre }}" data-title="{{ album.album_title }}" data-sort="{{ album.album_title }}">
+                      <a class="item mb-2 btn {{ album.cover }}" href="/album/{{ _id }}/0"
+                        style="width: 100%; height: 180px; display: flex; align-items: center; overflow: hidden;">
+                        <h5 style="display: inline-block; width: 100%;">{{ album.album_title }}</h5>
+                      </a>
+                    </div>
+                  {% endfor %}
+                  </div>
+                <div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+{% endblock %}

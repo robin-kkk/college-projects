@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid pt-4">
+        <div class="row mb-2">
+
+          <div class="col-12 col-md-4">
+            <div class="card card-info card-outline" style="height: 170px;">
+                <div class="card-header"><h5 class="card-title m-0"><b>Event</b></h5></div>
+                <div class="card-body">
+                  <h6 class="card-title"><i>[Coming Soon]</i>&nbsp;&nbsp;4 Awards for Best Website!</h6>
+                  <h6 class="card-title"><i>[Coming Soon]</i>&nbsp;&nbsp;Over 50,000 Users!</h6>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="card card-info card-outline" style="height: 170px;">
+                <div class="card-header"><h5 class="card-title m-0"><b>Notice</b></h5></div>
+                <div class="card-body">
+                  <h6 class="card-title text-danger">Please be courteous when collaborating.</h6>
+                  <p class="card-text">It is wrong to swear or blame someone for rejecting a collaboration request.
+                  Let's be users who understand each other's position.</p>
+                </div>
+            </div>
+          </div>
+          
+          <div class="col-12 col-md-2">
+              <div class="info-box mb-2">
+                  <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text">Albums</span>
+                      <span class="info-box-number">{{ data.num_albums }}</span>
+                  </div>
+              </div>
+              <div class="info-box mb-2">
+                  <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                  <div class="info-box-content">
+                      <span class="info-box-text">Members</span>
+                      <span class="info-box-number">{{ data.num_artists }}</span>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+        {% for artist_id, _data in data.artist_rmd_list.items() %}
+          <div class="col-md-4">
+            <div class="card card-widget widget-user">
+              <div class="widget-user-header bg-info">
+                <div class="row mb-2">
+                  <div class="col-md-6">
+                    <a href="/profile/{{ artist_id }}">
+                      <h5 class="text-warning" style="margin-top: .5em;">{{ artist_id }}</h5> <!-- class="widget-user-username"  -->
+                      <h6>{{ _data[0] }}</h6>
+                    </a>
+                    <h6 class="widget-user-desc">{{ _data[1] }}</h6>
+                  </div>
+                  <div class="col-md-6"><i class="fas fa-burn text-danger"></i>&nbsp;&nbsp;Hottest Albums<br>
+                    <ul class="ml-4 mb-0 fa-ul text-muted" style="height: 80px; overflow: auto; margin-left: .5rem!important;">
+                    {% for album_id in _data[2] %}
+                      {% set album_title = data.album_rmd_list[album_id] %}
+                      <li><a href="/album/{{ album_id }}/0" class="text-navy"><i>{{ album_title }}</i></a></li>
+                    {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer" style="padding-top: 1em;">
+                <div class="row mb-2">
+                  <div class="col-sm-6 border-right">
+                    <div class="description-block">
+                      <h5 class="description-header">{{ _data[2] | length }}</h5>
+                      <span class="description-text">Albums #</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="description-block">
+                      <h5 class="description-header">{{ _data[3] }}</h5>
+                      <span class="description-text">Collaborations #</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+
+        <div class="row pb-4">
+          <div class="col-12">
+            <div class="card card-primary">
+              <div class="card-body">
+                <div>
+                  <div class="btn-group w-100 mb-2 row d-flex align-items-stretch mb-4">
+                    <a class="col-md-2 btn btn-info active" href="javascript:void(0)" style="border-radius: unset;" data-filter="all"> All Albums </a>
+                    {% for genre in data.genre_list %}
+                    <a class="col-md-2 btn btn-info" {% if loop.index == loop.length %}style="border-radius:unset"{% endif %}
+                      href="javascript:void(0)" data-filter="{{ genre }}">
+                      {{ genre }}
+                    </a>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div>
+                  <div class="p-0 row" id="album-container">
+                  {% for _id, album in data.all_albums.items() %}
+                    <div class="album-item col-sm-2">
+                      <a class="item mb-2 btn {{ album.cover }}" href="/album/{{ _id }}/0">
+                        <h5>{{ album.album_title }}</h5>
+                      </a>
+                    </div>
+                  {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer" style="text-align:center;">
+                <div class="col-2 btn btn-info" id="load">Load More</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<script>
+  function load_data(form_data) {
+    //alert('selected_genre: ' + form_data.get('selected_genre') + '\nlast_album_id: ' + form_data.get('last_album_id'));
+    $("#load").addClass("disabled");
+    $.ajax({
+      type: 'POST',
+      url: '/load',
+      data: form_data,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data) {
+        //alert('received items #: ' + Object.keys(data).length);
+        $(".overlay").remove();
+        $.each(data, function(key,value) {
+          var el_html = "<div class='album-item col-sm-2'> \
+                          <a class='item mb-2 btn " + value.cover + "' href='/album/" + key +"/0'> \
+                            <h5>" + value.album_title + "</h5> \
+                          </a> \
+                        </div>";
+          $("#album-container").append(el_html);
+        });
+        $("#load").removeClass("disabled");
+      },
+      error: function () {
+        alert("Error!");
+        $("#load").removeClass("disabled");
+      },
+    });
+  };
+
+  $(function(){
+    $('.search').select2({
+      minimumInputLength: 4
+    });
+    
+    $('.btn[data-filter]').on('click', function() {
+      $('.btn[data-filter]').removeClass('active');
+      $(this).addClass('active');
+
+      var selected_genre = $(".active").attr("data-filter");
+      var form_data = new FormData();
+      form_data.append("selected_genre", selected_genre);
+      form_data.append("last_album_id", "0");
+
+      $(".album-item").remove();
+      var loading = '<div class="overlay" style="width:100%;height:80px;"><i class="fas fa-2x fa-spinner loading" style=""></i></div>';
+      $("#album-container").append(loading);
+
+      load_data(form_data);
+    });
+
+    $("#load").on('click', function() {
+      var selected_genre = $(".active").attr("data-filter");
+      var last_album_id = $(".item").last().attr('href').split('/')[2];
+      var form_data = new FormData();
+      form_data.append("selected_genre", selected_genre);
+      form_data.append("last_album_id", last_album_id);
+
+      var loading = '<div class="overlay" style="width:100%;height:60px;"><i class="fas fa-2x fa-spinner loading" style=""></i></div>';
+      $("#album-container").append(loading);
+      load_data(form_data);
+    });
+  });
+</script>
+{% endblock %}

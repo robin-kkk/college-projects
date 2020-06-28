@@ -1,0 +1,203 @@
+{% if msg %}
+<script>window.alert("{{ msg }}");</script>
+{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Share ur Album !!</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/all.min.css') }}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/icheck-bootstrap.min.css') }}">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/select2-bootstrap4.min.css') }}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/adminlte.min.css') }}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box" style="width: 60%;">
+  <div class="register-logo">
+    <a href="/">Share ur <b>Album</b> !!</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">Register a new membership</p>
+
+      <form action="/register" method="post" onsubmit="return register()">
+        <div class="row">
+          <div class="col-md-6">
+
+            <div class="input-group mb-3">
+              <input type="text" name="artist_id" class="form-control" placeholder="Artist ID">
+              <div class="input-group-append"><div class="input-group-text"></div></div>
+            </div>
+            
+            <div class="input-group mb-3">
+              <input type="password" name="password" class="form-control" placeholder="Password">
+              <div class="input-group-append"><div class="input-group-text"></div></div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input type="email" name="email" class="form-control" placeholder="Email">
+              <div class="input-group-append"><div class="input-group-text"></div></div>
+            </div>
+            
+            <div class="form-group">
+              <label>Role</label>
+              <select name="role" class="form-control select2" style="width: 100%;">
+                {% for role in data.role %}
+                  <option>{{ role }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Country (option)</label>
+              <select name="country" class="form-control select2" style="width: 100%;">
+                <option selected="selected">-</option>
+                {% for country in data.country %}
+                  <option>{{ country }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+
+            <div class="input-group mb-3">
+              <input type="text" name="real_name" class="form-control" placeholder="Real name">
+              <div class="input-group-append"><div class="input-group-text"></div></div>
+            </div>
+
+            <div class="input-group mb-3">
+              <input type="password" name="re_password" class="form-control" placeholder="Retype password">
+              <div class="input-group-append"><div class="input-group-text"></div></div>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="text" name="art_name" class="form-control" placeholder="Art name (option)">
+                <div class="input-group-append"><div class="input-group-text"></div></div>
+            </div>
+
+            <div class="form-group">
+              <label>Year of birth (option)</label>
+              <div class="input-group">
+                <input type="text" name="year_of_birth" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask>
+                <div class="input-group-append"><div class="input-group-text"></div></div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>City (option)</label>
+              <select name="city" class="form-control select2" style="width: 100%;">
+                <option selected="selected">-</option>
+                {% for city in data.city %}
+                  <option>{{ city }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="icheck-primary">
+              <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+              <label for="agreeTerms">
+               I agree to the <a href="#">terms</a>
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </form>
+
+      
+
+      <a href="/login" class="text-center">I already have a membership</a>
+    </div>
+  </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<!-- jQuery UI -->
+<script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='js/adminlte.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ url_for('static', filename='js/select2.full.min.js') }}"></script>
+<!-- InputMask -->
+<script src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.inputmask.bundle.min.js') }}"></script>
+<!-- Page script -->
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2();
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    });
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('yyyy', { 'placeholder': 'yyyy' });
+    //Money Euro
+    $('[data-mask]').inputmask();
+
+  });
+
+
+  function register() {
+    var forms = $('.form-control');
+
+    if (!(new RegExp(/^[A-za-z0-9]{6,14}$/)).test(forms[0].value)) {
+      alert("아이디는 6~14 글자이어야 하고 영문 및 숫자로 이루어져야 합니다. 숫자는 먼저 올 수 없습니다."); 
+      return false;
+    }
+
+    if (forms[1].value.length < 6) {
+      alert("비밀번호는 6글자 이상 영숫자 조합만 가능합니다."); 
+      return false;        
+    }
+    
+    if (!(new RegExp(/^[A-za-z0-9]{6,14}$/)).test(forms[1].value)) {
+      alert("비밀번호는 6~14 글자이어야 하고 영숫자 조합만 가능합니다."); 
+      return false;
+    }
+
+    if (forms[0].value != forms[1].value) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return false;
+    }
+
+    if (forms[7].value != '') {
+      if (forms[7].value.length < 4) {
+        alert("아티스트명은 4 글자 이상 입력해야 합니다."); 
+        return false;
+      }
+    }
+    return true;
+  }
+</script>
+</body>
+</html>

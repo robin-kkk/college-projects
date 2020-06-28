@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+    rabbitmq:
+        container_name: capstone_rabbitmq
+        image: rabbitmq:latest
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        environment:
+            - RABBITMQ_DEFAULT_USER=user
+            - RABBITMQ_DEFAULT_PASS=password
+    app:
+        container_name: capstone_app
+        image: ke2ek/django-gunicorn-celery-khaiii:1.0
+        command: ./scripts/run_server.sh stock_recommendation
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./stock_recommendation:/code
+        depends_on:
+            - rabbitmq
+        restart: always
+    nginx:
+        container_name: capstone_nginx
+        image: nginx:1.13
+        ports:
+            - "80:80"
+        volumes:
+            - ./stock_recommendation/.static_root:/static
+            - ./config/nginx:/etc/nginx
+        depends_on:
+            - app
+        restart: always
+    async:
+        container_name: capstone_async
+        image: ke2ek/django-gunicorn-celery-khaiii:1.0
+        command: celery -A stock_recommendation worker -l info -B
+        volumes:
+            - ./stock_recommendation:/code
+        depends_on:
+            - rabbitmq
+        restart: always
+

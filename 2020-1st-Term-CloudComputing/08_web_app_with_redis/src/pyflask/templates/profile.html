@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content-wrapper" style="padding: 1.5em 0.5em;">
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!-- Profile Image -->
+            <div class="card card-info card-outline">
+              <div class="card-body box-profile">
+                <h3 class="profile-username text-center">
+                {% if data.art_name %} {{ data.art_name }}
+                {% else %} {{ data.real_name }}
+                {% endif %}
+                </h3>
+                <p class="text-muted text-center">{{ data.role }}</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <b>Album #</b> <a class="float-right">{{ data.albums | length }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Collaboration #</b> <a class="float-right">{{ data.list.collaboration | length }}</a>
+                  </li>
+                  <li class="list-group-item"><b>Year of Birth</b> 
+                    <a class="float-right">
+                    {% if data.year_of_birth | length == 0 %}-
+                    {% else %}{{ data.year_of_birth }}{% endif %}</a>
+                  </li>
+                </ul>
+                
+                {% if user.artist_id == data.artist_id %}
+                <a href="/album/produce" class="btn btn-info btn-block"><b>Produce</b></a>
+                {% else %}
+                <a href="/collaborate/{{ data.artist_id }}" class="btn btn-info btn-block"><b>Collaborate</b></a>
+                {% endif %}
+                
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- About Me Box -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">About <i>{{ data.artist_id }}</i></h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <strong>Real Name</strong><p class="text-muted">{{ data.real_name }}</p><hr>
+                <strong>Art Name</strong><p class="text-muted">{{ data.art_name }}</p><hr>
+                <strong>Email</strong><p class="text-muted">{{ data.email }}</p><hr>
+
+                <strong>Location</strong>
+                <p class="text-muted">{{ data.country }}, {{ data.city }}</p>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  {% if show %}
+                  <li class="nav-item"><a class="nav-link active" href="#albums" data-toggle="tab">Albums</a></li>
+                  {% else %}
+                  <li class="nav-item"><a class="nav-link" href="#albums" data-toggle="tab">Albums</a></li>
+                  {% endif %}
+                  <li class="nav-item"><a class="nav-link" href="#collaborations" data-toggle="tab">Collaborations</a></li>
+                  {% if user.artist_id == data.artist_id %}
+                    {% if show %}
+                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a></li>
+                    {% endif %}
+                  {% endif %}
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="{% if show == 1 %}active {% endif %}tab-pane" id="albums">
+                    {% set albums = data.list['albums'] %}
+                    {% for _id, album in albums.items() | reverse %}
+                    <div class="post" {% if album.artist_id | length == 1 %}style="padding-bottom:50px;"{% endif %}>
+                      <div class="user-block" style="margin-bottom: 5px;">
+                        <span class="username" style="margin-left: 15px;">
+                          {% if user.artist_id == data.artist_id %}
+                          <a href="/album/{{_id}}/2">{{ album.album_title }} ({{ album.year_of_pub }})</a>
+                          <a href="/album/delete/{{_id}}" class="float-right btn-tool" style="padding: 1rem .5rem;"><i class="fas fa-times"></i></a>
+                          {% else %}
+                          <a href="/album/{{_id}}/0">{{ album.album_title }} ({{ album.year_of_pub }})</a>
+                          {% endif %}
+                        </span>
+                        <span class="description" style="margin-left: 15px;">{{ album.genre }}</span>
+                      </div>
+                      {% if album.artist_id | length > 1 %}
+                      <p style="padding-left: 30px;margin: 0;"><i class="fas fa-users" style="margin-right: .5em;"></i>
+                        {% for artist in album.artist_id %}
+                        <a href="/profile/{{ artist }}"><i>{{ artist }}&nbsp;&nbsp;</i></a>
+                        {% endfor %}
+                      </p>
+                      {% endif %}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  
+                  <div class="tab-pane" id="collaborations">
+                    <div class="row d-flex align-items-stretch">
+                      {% set collaborations = data.list.collaboration %}
+                      {% for _id, _data in collaborations.items() %}
+                      <div class="col-12 col-sm-6 col-md-3 d-flex align-items-stretch">
+                        <div class="card bg-light" style="width:100%;">
+                          <div class="card-header text-muted border-bottom-0">{{ _data[0] }}</div>
+                          <div class="card-body pt-0">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <h2 class="lead" style="font-size:1rem;"><b>{{ _id }}</b><i class="float-right">#{{ _data[1] | length }}</i></h2>
+                                <ul class="ml-4 mb-0 fa-ul text-muted" style="width: 100%; height:120px; margin-left: .5rem!important; overflow: auto;">
+                                  {% for _album_id in _data[1] %}
+                                  {% set album =  albums[_album_id] %}
+                                  <li class="small"><a href="/album/{{_album_id}}/0">[{{ album.genre }}] {{ album.album_title }} ({{ album.year_of_pub }})</a></li>
+                                  {% endfor %}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-footer">
+                            <div class="text-right">
+                              <a href="/profile/{{ _id }}" class="btn btn-sm btn-info"><i class="fas fa-user"></i> View Profile</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  {% if collaborations | length > 0 %}<hr>{% endif %}
+                  {% if user.artist_id == data.artist_id %}
+                    {% if (data.request_list | length > 0) or (data.response_list | length > 0) %}
+                    <div class="timeline timeline-inverse">
+                      <div class="time-label"><span class="bg-warning">Request List</span></div>
+                      {% for _id, val in data.request_list.items() | reverse %}
+                      <div>
+                        {% if val[0] == 0 %}
+                        <i class="fas fa-envelope bg-info"></i>
+                        <div class="timeline-item">
+                          <div class="time">Waitting</div>
+                          <div class="timeline-header border-0"><a href="/profile/{{ _id }}" style="margin-right: 1em;">To.  <i>{{ _id }}</i></a>{{ val[1] }}</div>
+                        </div>
+                        {% else %}
+                          {% if val[0] == 1 %}
+                          <i class="fas fa-thumbs-up bg-info"></i>
+                          <div class="timeline-item">
+                            <div class="time">Accepted</div>
+                            <div class="timeline-header border-0"><a href="/profile/{{ _id }}" style="margin-right: 1em;">To.  <i>{{ _id }}</i></a>{{ val[1] }}</div>
+                          </div>
+                          {% else %}
+                          <i class="fas fa-skull bg-danger"></i>
+                          <div class="timeline-item">
+                            <span class="time">Rejected</span>
+                            <div class="timeline-header border-0"><a href="/profile/{{ _id }}" style="margin-right: 1em;">To.  <i>{{ _id }}</i></a>{{ val[1] }}</div>
+                          </div>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                      {% endfor %}
+
+                      <div class="time-label"><span class="bg-warning">Response List</span></div>
+                      {% for _id, val in data.response_list.items() | reverse %}
+                      <div>
+                        {% if val[0] == 0 %}
+                        <i class="fas fa-envelope bg-info"></i>
+                        <div class="timeline-item">
+                          <div class="time" style="padding: 0.5em;">
+                            <a href="/accept_collaboration/{{ _id }}" class="btn btn-primary btn-sm">Accept</a>
+                            <a href="/reject_collaboration/{{ _id }}" class="btn btn-danger btn-sm">Reject</a>
+                          </div>
+                          <div class="timeline-header" style="border-bottom: none;line-height: 1.5;">
+                            <a href="/profile/{{ _id }}">From.  <i>{{ _id }}</i></a>
+                            <span style="padding-left:1em;">{{ val[1] }}</span>
+                          </div>
+                        </div>
+                        {% else %}
+                          {% if val[0] == 1 %}
+                          <i class="fas fa-thumbs-up bg-info"></i>
+                          <div class="timeline-item">
+                            <div class="time">Accepted</div>
+                            <div class="timeline-header border-0"><a href="/profile/{{ _id }}" style="margin-right: 1em;">From.  <i>{{ _id }}</i></a>{{ val[1] }}</div>
+                          </div>
+                          {% else %}
+                          <i class="fas fa-skull bg-danger"></i>
+                          <div class="timeline-item">
+                            <span class="time">Rejected</span>
+                            <h3 class="timeline-header border-0"><a href="/profile/{{ _id }}" style="margin-right: 1em;">From.  <i>{{ _id }}</i></a>{{ val[1] }}</h3>
+                          </div>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endif %}
+                  </div>
+
+                  {% if user.artist_id == data.artist_id %}
+                    {% if show %}
+                    <div class="tab-pane" id="settings">
+                    {% else %}
+                    <div class="active tab-pane" id="settings">
+                    {% endif %}
+                    <form class="form-horizontal" action="/profile/{{ user.artist_id }}" method="POST">
+                      <div class="form-group row">
+                        <label for="inputName" class="col-sm-3 col-form-label">Real Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputName" name="real_name" value="{{ data.real_name }}">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputArtName" class="col-sm-3 col-form-label">Art Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="inputArtName" name="art_name" value="{{ data.art_name }}">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control" id="inputEmail" name="email" value="{{ data.email }}">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="inputYear" class="col-sm-3 col-form-label">Year of Birth</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="year_of_birth" class="form-control" id="inputYear" value="{{ data.year_of_birth }}"
+                            data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="inputRole" class="col-sm-3 col-form-label">Role</label>
+                        <div class="col-sm-8">
+                          <select name="role" class="form-control select2" id="inputRole" style="width: 100%;">
+                            {% for role in data.list.role %}
+                              {% if role == data.role %}
+                              <option selected="selected">{{ role }}</option>
+                              {% else %}
+                              <option>{{ role }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputCountry" class="col-sm-3 col-form-label">Country</label>
+                        <div class="col-sm-8">
+                          <select name="country" class="form-control select2" id="inputCountry" style="width: 100%;">
+                            <option>-</option>
+                            {% for country in data.list.country %}
+                              {% if country == data.country %}
+                              <option selected="selected">{{ country }}</option>
+                              {% else %}
+                              <option>{{ country }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputCity" class="col-sm-3 col-form-label">City</label>
+                        <div class="col-sm-8">
+                          <select name="city" class="form-control select2" id="inputCity" style="width: 100%;">
+                            <option>-</option>
+                            {% for city in data.list.city %}
+                              {% if city == data.city %}
+                              <option selected="selected">{{ city }}</option>
+                              {% else %}
+                              <option>{{ city }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Current Password">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputNewPassword" class="col-sm-3 col-form-label">New Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="new_password" class="form-control" id="inputNewPassword" placeholder="New Password (option)">
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="inputReNewPassword" class="col-sm-3 col-form-label">Retype New Password</label>
+                        <div class="col-sm-8">
+                            <input type="password" name="re_new_password" class="form-control" id="inputReNewPassword" placeholder="Retype New Password (option)">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <div class="offset-sm-3 col-sm-10">
+                          <button type="submit" class="btn btn-danger">Save</button>
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                  {% endif %}
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+{% endblock %}

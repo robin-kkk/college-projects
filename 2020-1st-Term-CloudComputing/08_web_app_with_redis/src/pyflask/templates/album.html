@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content-wrapper" style="padding: 4em;">
+    <div class="content">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h5 class="card-title m-0">Album ID: 
+                    {% if data %}{{ data.album_id }}
+                    {% else %}-
+                    {% endif %}
+                </h5>
+            </div>
+
+            {% if status == 0 %}
+            <div class="card-body">
+                <blockquote class="quote-navy">
+                    <h3>{{ data.album_title }}</h3>
+                    <p>{{ data.year_of_pub }},  <cite title="Source Title">{{ data.genre }}</cite></p>
+                    <small>Num of Tracks: {{ data.num_of_tracks }}<br>Num of Sales: {{ data.num_of_sales }}</small>
+                </blockquote>
+                <h6 class="card-text">Prod. By</h6>&nbsp;&nbsp;
+                {% for artist in data.artist_id %}
+                <a href="/profile/{{ artist }}" class="btn btn-default"><b><i>{{ artist }}</i></b></a>
+                {% endfor %}
+            </div>
+            {% if user.artist_id in data.artist_id %}
+            <div class="card-footer">
+                <a href="/album/delete/{{ data.album_id }}" class="btn btn-danger float-right">Delete</a>
+                <a href="/album/{{ data.album_id }}/2" class="btn btn-primary float-right" style="margin-right: 0.5em;">Edit</a>
+            </div>
+            {% endif %}
+            {% else %}
+            <form action="/album/save{% if data %}/{{ data.album_id }}{% endif %}" id="album-form" method="post" onsubmit="return save_album()">
+                <div class="card-body">
+                    <blockquote class="quote-navy">
+                        <input class="form-control mb-2" type="text" name="album_title"
+                        {% if data %} value="{{ data.album_title }}"
+                        {% else %} placeholder="Album Title"
+                        {% endif %} style="width: 250px;" />
+                        <div style="display:flex;" class="mb-2">
+                            <input type="text" name="year_of_pub" class="form-control"
+                            {% if data %} value="{{ data.year_of_pub }}" {% endif %}
+                            style="width: 80px; margin-right: 5px; display: inline-block;"
+                            data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask />
+                            <div style="display:inline-block;">
+                                <select name="genre" class="form-control select2" id="inputRole" style="width: 165px;height: 30px;">
+                                    {% if data %}
+                                        {% for genre in genre_list %}
+                                            {% if genre == data.genre %}
+                                            <option selected="selected">{{ genre }}</option>
+                                            {% else %}
+                                            <option>{{ genre }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for genre in genre_list %}
+                                            <option>{{ genre }}</option>
+                                        {% endfor %}
+                                    {% endif %}
+                                </select>
+                            </div>
+                        </div>
+                        <small>
+                            The Number of Tracks:
+                            <input type="number" name="num_of_tracks" class="form-control form-control-sm mb-1"
+                            value="{% if data %}{{ data.num_of_tracks }}{% else %}0{% endif %}"
+                            style="width: 120px; height:30px; display: inline-block; margin-left: .5em;"><br>
+                            The Number of Sales:&nbsp;&nbsp;
+                            <input type="number" name="num_of_sales" class="form-control form-control-sm"
+                            value="{% if data %}{{ data.num_of_sales }}{% else %}0{% endif %}"
+                            style="width: 120px; height:30px; display: inline-block; margin-left: .5em;">
+                        </small>
+                    </blockquote>
+                    <div class="col-12 col-sm-8">
+                        <div class="form-group">
+                            <label>Prod. By</label>&nbsp;&nbsp;
+                            <input type="hidden" name="artist_id" value="{{ user.artist_id }}"/>
+                            <a href="/profile/{{ user.artist_id }}" class="btn btn-default mb-2"><b><i>{{ user.artist_id }}</i></b></a>
+                            {% if collaborators | length > 0 %}
+                            <div class="select2-navy">
+                                <input type="hidden" id="collaborators" name="collaborators"/>
+                                <select class="select2" multiple="multiple" data-placeholder="Select a collaborators" data-dropdown-css-class="select2-navy" style="width: 100%;">
+                                {% if data %}
+                                    {% for artist_id in collaborators %}
+                                    <option {% if (artist_id in data.artist_id) and (artist_id != user.artist_id) %}selected="selected"{% endif %}>{{ artist_id }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for artist_id in collaborators %}
+                                    <option>{{ artist_id }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                                </select>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    {% if data %}
+                    <a href="/album/delete/{{ data.album_id }}" class="btn btn-danger float-right">Delete</a>
+                    {% endif %}
+                    <button type="submit" class="btn btn-info float-right"{% if data %}style="margin-right: 0.5em;"{% endif %}>Save</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
