@@ -32,3 +32,9 @@ In case of some group projects, I marked who was with me.
 - [2019-2nd-Term-EngineForGTD](./2019-2nd-Term-EngineForGTD)
     - Course: Software Application
     - Language: Python
+- [2020-1st-Term-Capstone](./2020-1st-Term-Capstone)
+    - Course: Capstone Design in Computer Science
+    - Language: Python
+- [2020-1st-Term-CloudComputing](./2020-1st-Term-CloudComputing)
+    - Course: Cloud Computing
+    - Language: C, Python
