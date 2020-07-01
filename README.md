@@ -3,7 +3,7 @@ These are course projects suggested in lecture of University of Seoul.
 
 In case of some group projects, I marked who was with me.
 
-#### Named by `Year-WhichTerm-ProjectName`
+**Named by `Year-Term-ProjectName`**
 
 # Index of
 - [2017-1st-Term-ClassViewer](./2017-1st-Term-ClassViewer)
