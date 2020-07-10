@@ -5,19 +5,19 @@
 
 There are 7 assignments and the final project.
 
-- [`01`](./01) - _B-Tree Library_
+- [`01`](./01_B-Tree) - _B-Tree Library_
   - Condition: Implement insert/delete/search function.
   - Language: C
 
-- [`02`](./02) - _Key Value Store Library with B-Tree_
+- [`02`](./02_Key-Value-Store) - _Key Value Store Library with B-Tree_
   - Condition: Implement (key, value) put/get function.
   - Language: C
 
-- [`03`](./03) - _Key Value Test Program_
+- [`03`](./03_ParallelProgramming-with-BTree) - _Key Value Test Program_
   - Condition: Implement parallel test program with (key, value) insert/delete/search function.
   - Language: C
 
-- [`04`](./04) - _Performance Test of the Key Value Store_
+- [`04`](./04_PerformanceTest) - _Performance Test of the Key Value Store_
   - Condition: Test sequential or random read/write function.
   - Language: C
   - Menual:
@@ -32,7 +32,7 @@ There are 7 assignments and the final project.
     scanf("%d", &choice);
     ```
 
-- [`05`](./05) - _Multi-threading with Mutex_
+- [`05`](./05_MultiThreadTest-Mutex) - _Multi-threading with Mutex_
   - Condition: Implement `Lock Variable` using pthread.h.
   - Language: C
   - Structure:
@@ -44,7 +44,7 @@ There are 7 assignments and the final project.
     };
     ```
 
-- [`06`](./06) - _Comparing Lock Variables_
+- [`06`](./06_CompareLockVariable) - _Comparing Lock Variables_
   - Condition: Implement to compare RW_LOCK variable with Mutex variable.
   - Language: C
   - Structure:
@@ -57,7 +57,7 @@ There are 7 assignments and the final project.
     };
     ```
 
-- [`07`](./07) - _Parallel Test of Key Value Store Library with `Skiplist`_
+- [`07`](./07_ParallelProgramming-with-Skiplist) - _Parallel Test of Key Value Store Library with `Skiplist`_
   - Condition: Test performance for RW_LOCK variable.
   - Language: C
   - Structure:
@@ -69,7 +69,7 @@ There are 7 assignments and the final project.
     };
     ```
 
-- [`08`](./08) - _Web Application with Redis_
+- [`08`](./08_web_app_with_redis) - _Web Application with Redis_
   - Condition: Implement web service with Key-Value-Store (=NoSQL Database).
   - Language: Python 3
   - DevOps: Flask + Redis in docker
