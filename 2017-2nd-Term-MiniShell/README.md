@@ -7,7 +7,7 @@ This project was to modify the suggested source code and implement a shell progr
 
 [`result`](./result) directory has many images after execution.
 
-In [`mini_sh.c`](./mini_sh.c), I marked the things I wrote like below.
+In [`mini_sh.c`](./mini_sh.c), I marked the things I wrote as like below.
 
 ```cpp
 /* Do something */
