@@ -125,9 +125,9 @@ MainWindow::MainWindow(QWidget *parent)
     qRegisterMetaType<vector<double>>("vector<double>");
     qRegisterMetaType<vector<vector<vector<double> > >*>("vector<vector<vector<double> > >*");
     connect(_classifier,
-            SIGNAL(changed_weight(vector<vector<vector<double> > >*, vector<vector<vector<double> > >*, double, QString*)),
+            SIGNAL(changed_weight(vector<vector<vector<double> > >*, vector<vector<double>>*, double, int, int, QString*)),
             this,
-            SLOT(iterated_once(vector<vector<vector<double> > >*, vector<vector<vector<double> > >*, double, QString*)));
+            SLOT(iterated_once(vector<vector<vector<double> > >*, vector<vector<double>>*, double, int, int, QString*)));
     connect(_classifier,
             SIGNAL(done(vector<double>, bool)),
             this,
@@ -204,7 +204,7 @@ void MainWindow::clicked_start_btn()
         _learning_graph->set_play_enabled(false);
 
         _learning_graph->change_line_color(false);
-        _classifier->ready(_node_count, _rate_box->value(), input, output, _iter_cnt_box->value());
+        _classifier->init(_rate_box->value(), _node_count, input, output, _iter_cnt_box->value());
         _classifier->start();
     }
     _classifier->change_state();
@@ -279,52 +279,41 @@ void MainWindow::applied_node_info(vector<int> node_cnt)
 }
 
 
-void MainWindow::iterated_once(vector<vector<vector<double> > > *weights,
-                               vector<vector<vector<double> > > *inputs,
-                               double bias,
+void MainWindow::iterated_once(vector<vector<vector<double>>>* weights,
+                               vector<vector<double>>* nodes,
+                               double bias, int iter, int input_order,
                                QString* h_text)
 {
-    vector<vector<vector<double> > > copied_w;
-    vector<vector<vector<double> > > copied_i;
-    copy(weights->begin(), weights->end(), back_inserter(copied_w));
-    copy(inputs->begin(), inputs->end(), back_inserter(copied_i));
+    vector<vector<vector<double>>> copied_weights;
+    vector<vector<double>> copied_nodes;
+    copy(weights->begin(), weights->end(), back_inserter(copied_weights));
+    copy(nodes->begin(), nodes->end(), back_inserter(copied_nodes));
 
-    int layer_count = _node_count.size();
-
-    // _w4d[i][j][k][l] : i = layer number, j = output node number, k = iter cnt, l = input node number
-    // _i4d[i][j][k][l]
-
-    for (int i=0; i<layer_count-2; i++) {
-        int output_node_number = _node_count[i+1];
-        int input_node_number = _node_count[i];
-        _w4d.push_back(vector<vector<vector<double> > > (output_node_number));
-        _i4d.push_back(vector<vector<vector<double> > > (output_node_number));
-        for (int j=0; j<output_node_number; j++) {
-            _w4d[i][j].push_back(copied_w[i][j]);
-            vector<double> *nodes = new vector<double>(input_node_number);
-            for (int k=0; k<input_node_number; k++) {
-                nodes->push_back(copied_i[i][k].back());
-            }
-            _i4d[i][j].push_back(*nodes);
+    if (_w4d.size() == iter + 1) {
+        _w4d[iter].clear();
+        _w4d[iter] = copied_weights;
+        if (_i4d[iter].size() == input_order + 1) {
+            _i4d[iter][input_order].clear();
+            _i4d[iter][input_order] = copied_nodes;
+        } else {
+            _i4d[iter].push_back(copied_nodes);
         }
+    } else {
+        _w4d.push_back(copied_weights);
+        _i4d.push_back(vector<vector<vector<double>>> (1, copied_nodes));
     }
 
-    int last_hidden_node_cnt = _node_count[layer_count-2];
-    vector<double> w(last_hidden_node_cnt); // = new vector<double>(last_hidden_node_cnt);
-    copy(copied_w[layer_count-2][0].begin(), copied_w[layer_count-2][0].end(), w.begin());
-    vector<double> i(last_hidden_node_cnt); // = new vector<double>(last_hidden_node_cnt);
-    i[0] = copied_i[layer_count-2][0].back();
-    i[1] = copied_i[layer_count-2][1].back();
+    // _w4d[i][l][u][v] : i = iter index, l = layer, u = output node index, v = input nodes index
+    // _i4d[i][j][l][k] : i = iter index, j = input order, l = layer, k = node index
 
-    double intercept = bias;
-    for (int n=2; n<last_hidden_node_cnt; n++) {
-        double x = copied_i[layer_count-2][n].back();
-        i[n] = x;
-        intercept = w[n] * x;
-    }
-    double slope = -(w[0]/w[1]);
-    intercept /= -w[1];
-    _learning_graph->add_data(&w, &i);
+    int num_layers = _node_count.size();
+    vector<double> last_hidden_layer_weights;
+    vector<double> last_hidden_layer_nodes = copied_nodes[num_layers-2];
+    for (int i = 0; i < last_hidden_layer_nodes.size(); i++)
+        last_hidden_layer_weights.push_back(copied_weights[num_layers-2][i][0]);
+    double intercept = -last_hidden_layer_weights[1];
+    double slope = - (last_hidden_layer_weights[0] / last_hidden_layer_weights[1]);
+    _learning_graph->add_data(&last_hidden_layer_weights, &last_hidden_layer_nodes);
     _learning_graph->draw_line(slope, intercept);
     _hypothesis_label->setText(*h_text);
 }

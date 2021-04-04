@@ -25,9 +25,9 @@ public slots:
     void clicked_see_more_btn();
     void clicked_clear_btn();
     void applied_node_info(vector<int> node_cnt);
-    void iterated_once(vector<vector<vector<double> > > *weights,
-                       vector<vector<vector<double> > > *inputs,
-                       double bias,
+    void iterated_once(vector<vector<vector<double>>>* weights,
+                       vector<vector<double>>* nodes,
+                       double bias, int iter, int input_order,
                        QString* h_text);
     void iterated_all(vector<double> errors, bool not_broken);
 
@@ -59,7 +59,7 @@ private:
     Classifier *_classifier;
     LearningGraph *_learning_graph;
     LayerSettingsWindow *_layersettingswindow;
-    vector<vector<vector<vector<double> > > > _w4d;
-    vector<vector<vector<vector<double> > > > _i4d;
+    vector<vector<vector<vector<double>>>> _w4d;
+    vector<vector<vector<vector<double>>>> _i4d;
 };
 #endif // MAINWINDOW_H
