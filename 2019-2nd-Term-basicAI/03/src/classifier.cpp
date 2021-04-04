@@ -22,14 +22,11 @@ void Classifier::init(double learning_rate,
 
     nodes_.clear();
     weights_.clear();
-    derivatives_.clear();
-
     errors_.clear();
     predictions_.clear();
 
     nodes_.resize(num_layers_);
     weights_.resize(num_layers_-1);
-    derivatives_.resize(num_layers_);
     int max_num_nodes = 0;
     for (int l = 0; l < num_layers_; l++) {
         if (l < num_layers_-1) {
@@ -41,7 +38,6 @@ void Classifier::init(double learning_rate,
             }
         }
 
-        derivatives_[l] = vector<double> (num_nodes_[l], 0.0);
         gradients_[l] = vector<double> (num_nodes_[l], 0.0);
         nodes_[l] = vector<double> (num_nodes_[l], 0.0);
         if (max_num_nodes < num_nodes[l])
@@ -57,7 +53,6 @@ void Classifier::init(double learning_rate,
      * num_nodes[l] := l번째 레이어의 노드 개수
      * nodes[l][i] := l번째 레이어의 i번째 노드의 계산 결과
      * weights[l][i][j] := l번째 레이어의 i번째 노드와 다음 레이어의 j번째 노드를 연결한 간선의 가중치
-     * derivatives[l][i] := l번째 레이어의 i번째 노드의 계산 결과의 미분값
      * gradients[l][i] := l번째 레이어의 i번째 노드의 gradient
     */
 }
@@ -160,15 +155,6 @@ void Classifier::debug(bool only_weight)
             cout << endl;
         }
     }
-
-    cout << endl << "Derivatives: " << endl;
-    for (int l = 1; l < num_layers_; l++) {
-        cout << endl << "Layer " << l << " : " << endl;
-        for (int i = 0; i < num_nodes_[l]; i++) {
-            cout << derivatives_[l][i] << ", ";
-        }
-        cout << endl;
-    }
 }
 
 
@@ -256,8 +242,6 @@ double Classifier::forward() {
         for (int i = 0; i < num_nodes_[l]; i++) {
             double net = dot_product(l-1, i);
             nodes_[l][i] = sigmoid(net + bias_);
-            // 미분 결과 캐싱
-            derivatives_[l][i] = sigmoid_prime(nodes_[l][i]);
         }
     }
     return nodes_[num_layers_ - 1][0]; // 출력층 계산 결과 반환
@@ -273,7 +257,7 @@ void Classifier::backward(double loss_gradient) {
         for (int i = 0; i < num_nodes_[l]; i++) {
             // 현재 레이어의 gradient에 local gradient를 곱함.
             // upstream gradient 가 모두 더해졌다고 가정.
-            gradients_[l & 1][i] *= derivatives_[l][i];
+            gradients_[l & 1][i] *= sigmoid_prime(nodes_[l][i]);
 
             // 현재 노드와 이전 레이어의 노드들과의 간선의 가중치 갱신 및 미분 결과 계산
             for (int j = 0; j < num_nodes_[l-1]; j++) {

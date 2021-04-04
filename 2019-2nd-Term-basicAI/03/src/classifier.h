@@ -62,7 +62,6 @@ private:
     vector<int> num_nodes_;
     vector<vector<double>> nodes_;
     vector<vector<vector<double>>> weights_;
-    vector<vector<double>> derivatives_;
     vector<double> gradients_[2];
     vector<double> errors_;
     vector<double> predictions_;
