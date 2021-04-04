@@ -69,9 +69,9 @@ I would introduce the important members.
 
 ``` cpp
 // Send weight, input, bias to MainWindow class after backpropagation.
-void changed_weight(vector<vector<vector<double> > > *weights,
-                    vector<vector<vector<double> > > *inputs,
-                    double bias,
+void changed_weight(vector<vector<vector<double>>>* weights_,
+                    vector<vector<double>>* nodes_,
+                    double bias, int iter, int input_order,
                     QString* h_text);
 
 // Send error data to MainWindow class after training.
@@ -89,8 +89,8 @@ Matrix multiplication of weight and input node.
 double dot_product(int prev_layer, int node_idx);
 
 // Some utility functions
-double loss(double pred); // pred: output after training
-double loss_prime(double pred);
+double loss(double prediction, double output);
+double loss_prime(double prediction, double output);
 double sigmoid(double x);
 double sigmoid_prime(double f);
 
@@ -98,7 +98,7 @@ double sigmoid_prime(double f);
 double forward();
 
 // Perform backwarding (Back-propagation)  during training
-void update_weights();
+void backward(double loss_gradient);
 ```
 
 ### How it works
@@ -107,7 +107,7 @@ Before looking at the following, I recommend to understand the [backpropagation]
 
 ![6](./img/6.png?raw=true)
 
-By `Chain Rule`, **Downstream gradient = (Upstream gradient) * (local gradient)**
+By `Chain Rule`, **Downstream gradient = SUM(Upstream gradient) * (local gradient) * weight**
 
 ![7](./img/7.png?raw=true)
 
@@ -119,66 +119,51 @@ The following code reflects these points.
 
 ``` cpp
 /* Index Information
-  * - _node_count[i] : `i` is the layer number. (0 = Input Layer, Last Layer = Output Layer)
-  * - _input[i][j][k] : `i` is the layer number. 'j' is the node number per layer.
-  *                    `k` is input order, but hidden layer and output layer have only 0.
-  * - _output[k] : `k` is input order. (ex: in AND Gate, { 0, 0, 0, 1 })
-  * - _weight[i][j][k] : `i` is the layer number. (Save weight matrix passed from `i` to the `i+1` th.)
-  *                      `j` is the node number in `i+1`th layer.
-  *                      `k` is the node number in `i`th layer.
-  * - _derivative[i][j] : `i` is the layer number starting at the hidden layer.
-  *                       `j` is a node number in `i`th layer. Last element is derivative value of output layer.
-  * - _error[i] : `i` is the number of attempts.
-  * - _delta[i][j] : `i` is the layer number. `j` is the node number in `i`th layer.
+ * num_nodes[l] := # of nodes in l-th layer.
+ * nodes[l][i] := activation function result of i-th node in l-th layer.
+ * weights[l][i][j] := weight between i-th node in l-th layer and j-th node in (l+1)-th layer.
+ * gradients[2][i] := gradient of i-th node in current layer and prev layer.
 */
 ```
 
 ``` cpp
-/* Return the predicted value after forwarding. */
-double Classifier::forward()
-{
-  double f = 0.0;
-  for (int i=1; i<_layer_count; i++)
-  {
-    int current_node_count = _node_count[i];
-    for (int j=0; j<current_node_count; j++)
-    {
-      double net = dot_product(i-1, j);
-      f = sigmoid(net + _bias);
-      _input[i][j][0] = f;
-      _derivative[i-1][j] = sigmoid_prime(f);
+/* Return the prediction after forwarding. */
+double Classifier::forward() {
+    for (int l = 1; l < num_layers_; l++) {
+        for (int i = 0; i < num_nodes_[l]; i++) {
+            double net = dot_product(l-1, i);
+            nodes_[l][i] = sigmoid(net + bias_);
+        }
     }
-  }
-
-  _derivative[_layer_count-1][0] = loss_prime(f); // dE_dO
-  return f;
+    return nodes_[num_layers_ - 1][0];
 }
-```
 
-``` cpp
-void Classifier::update_weights()
-{
-  _delta[_layer_count-1][0] = _derivative[_layer_count-1][0]; // dE_dO
+/* Run back-propagation */
+void Classifier::backward(double loss_gradient) {
+    // Assign gradient of loss function as gradient of output layer (1-node)
+    gradients_[(num_layers_ - 1) & 1][0] = loss_gradient;
 
-  for (int l=_layer_count-1; l>0; l--)
-  {
-    int order = (l == 1) ? _input_order : 0;
-    int node_cnt_in_curr_layer = _node_count[l];
-    int node_cnt_in_input_layer = _node_count[l-1];
-    for (int i=0; i<node_cnt_in_curr_layer; i++)
-    {
-      _delta[l][i] *= _derivative[l-1][i]; // Calculate local graidents
-      for (int j=0; j<node_cnt_in_input_layer; j++)
-      {
-        // Calculate upstream gradient and save.
-        _delta[l-1][j] += _delta[l][i] * _weight[l-1][i][j];
-        // Update weight of each input node.
-        double delta_w = -_learning_rate * _delta[l][i] * _input[l-1][j][order];
-        _weight[l-1][i][j] += delta_w;
-      }
+    for (int l = num_layers_ - 1; l > 0; l--) {
+        for (int i = 0; i < num_nodes_[l]; i++) {
+            // Multiply local gradient to gradient of current layer.
+            // Assume that it calculated already downstream gradient from next layer.
+            // -> downstream gradient = SUM(upstream gradient) * local gradient * weight.
+            gradients_[l & 1][i] *= sigmoid_prime(nodes_[l][i]);
+
+            for (int j = 0; j < num_nodes_[l-1]; j++) {
+                // Calculate change of change.
+                // Note that, in gradient descent, the parameter should be moved by reverse direction of gradient scope.
+                double delta_w = -learning_rate_ * gradients_[l & 1][i] * nodes_[l-1][j];
+                weights_[l-1][j][i] += delta_w;
+
+                // Propagate downstream gradient.
+                // For gradient of previous layer, add upstream gradient of the current node to gradient of each node of the previous layer.
+                gradients_[(l + 1) & 1][j] += gradients_[l & 1][i] * weights_[l-1][j][i];
+            }
+        }
     }
-  }
 }
+
 ```
 
 ## Conclusion
