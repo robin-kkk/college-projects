@@ -10,7 +10,7 @@ celery==4.4.5
 certifi==2022.12.7
 chardet==3.0.4
 cmake==3.17.3
-Django==3.0.7
+Django==3.1.13
 django-cors-headers==3.4.0
 docutils==0.15.2
 future==0.18.2
